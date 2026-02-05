@@ -1,5 +1,10 @@
+import controllers.PedidoController;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.TreeMap;
 
 import models.Pedido;
 
@@ -8,21 +13,27 @@ public class App {
     public static void main(String[] args) throws Exception {
         // Crear la lista inicial de pedidos
         /// CODE
-
+        PedidoController controller = new  PedidoController();
+        List<Pedido> pedidos = crearPedidos();
+        System.out.println(pedidos.get(0).getZona());
         // MÉTODO A: filtrarPorZona(List<Pedido>, int umbral)
         // Debe devolver un Stack con los pedidos cuya zona sea MAYOR al umbral
         // Recorre la lista de pedidos y añade al Stack solo aquellos que cumplan la
         // condición
         System.out.println("=== MÉTODO A: Filtrar por zona > 150 ===");
-        /// CODE
-
+        Stack<Pedido> pila = controller.filtrarPorZona(pedidos, 150);
+        pila.forEach(System.out::println);
+        
         // MÉTODO B: ordenarPorZona(Stack<Pedido>)
         // Debe devolver un Set (TreeSet) con los pedidos ordenados por zona ascendente
         // El TreeSet debe usar un Comparator que compare los pedidos por su zona
         // Importante: elimina duplicados basándose en cliente + zona
         System.out.println("=== MÉTODO B: Ordenar por zona ===");
         /// CODE
-
+        TreeMap<Integer, Queue<Pedido>> mapa = controller.agruparPorUrgencia(pedidos);
+        for (Map.Entry<Integer, Queue<Pedido>> entry : mapa.entrySet()) {
+            System.out.println("Urgencia "+ entry.getKey() + "-> " + entry.getValue());
+        }
         // MÉTODO C: agruparPorUrgencia(List<Pedido>)
         // Debe devolver un TreeMap<Integer, Queue<Pedido>> donde:
         // - La clave es el nivel de urgencia
